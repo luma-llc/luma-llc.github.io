@@ -378,19 +378,6 @@ section {
 }
 
 /* One section "open" to show depth */
-.proof-open .proof-sh {
-  background: var(--void-elevated);
-}
-
-.proof-open .proof-sh::before {
-  opacity: 1;
-  background: var(--tungsten);
-}
-
-.proof-open .proof-sh .sh-icon {
-  transform: rotate(180deg);
-}
-
 .proof-content {
   padding: 24px 28px;
   background: var(--void-deep);
@@ -452,6 +439,47 @@ section {
   font-style: italic;
   border-top: 1px solid var(--void-border);
   background: var(--void-surface);
+}
+
+/* Interactive proof accordion */
+.proof-sh {
+  cursor: pointer;
+}
+
+.proof-sh:hover {
+  background: var(--void-elevated);
+}
+
+.proof-sh:hover::before {
+  opacity: 1;
+  background: var(--tungsten);
+}
+
+.proof-panel {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease-out;
+}
+
+.proof-section.open .proof-panel {
+  max-height: 2000px;
+}
+
+.proof-section.open .proof-sh {
+  background: var(--void-elevated);
+}
+
+.proof-section.open .proof-sh::before {
+  opacity: 1;
+  background: var(--tungsten);
+}
+
+.proof-section.open .sh-icon {
+  transform: rotate(180deg);
+}
+
+.sh-icon {
+  transition: transform 0.3s;
 }
 
 /* Spectrum bottom edge on proof window */
@@ -679,7 +707,7 @@ footer {
       </svg>
     </div>
     <div class="hero-text">
-      <h1><strong>Expertise lives below the level of language.</strong></h1>
+      <h1><strong>Expertise lives beneath the level of language.</strong></h1>
     </div>
     <p class="hero-detail">The decisions your best people make on instinct. The workarounds they built because the system couldn't keep up. The knowledge that holds everything together and lives in exactly one person's head.</p>
     <div class="scroll-cue"><span></span></div>
@@ -717,58 +745,113 @@ footer {
           <path d="M44 54 L44 156 L156 156 L156 54" stroke="#D4A853" stroke-width="14" fill="none" stroke-linecap="square"/>
           <rect x="78" y="78" width="44" height="44" fill="#D4A853"/>
         </svg>
-        <span class="proof-title">Operational Analysis &mdash; Overview</span>
+        <span class="proof-title">Operational Analysis &mdash; The Prism</span>
       </div>
       <div class="proof-body">
 
-        <!-- Open section -->
-        <div class="proof-section proof-open">
-          <div class="proof-sh">
+        <!-- Section 1: How You Make Decisions -->
+        <div class="proof-section">
+          <div class="proof-sh" onclick="toggleProof(this)">
             <span class="sh-label">How You Make Decisions</span>
             <span class="sh-icon">&#9662;</span>
           </div>
-          <div class="proof-content">
-            <p><strong>The first question you ask yourself:</strong> &ldquo;Is this person someone I'd want to work with for six months?&rdquo; Every other criterion &mdash; budget, timeline, scope &mdash; is downstream of that initial gut check.</p>
-            <p><strong>What matters most, in order:</strong> Relationship fit, then complexity of the problem, then whether they'll actually implement what you recommend. Price is last.</p>
-            <div class="proof-insight">
-              <p><strong>You said</strong> profitability drives your client selection. <strong>Your decisions suggest</strong> you consistently choose interesting work over profitable work when they conflict &mdash; and you may not have noticed the pattern.</p>
+          <div class="proof-panel">
+            <div class="proof-content">
+              <p>This section maps the decision logic you use instinctively but have never articulated. The first question you actually ask yourself &mdash; before budget, scope, or timeline &mdash; and the hierarchy of criteria that follows.</p>
+              <p>Where your stated priorities and your revealed behavior diverge, framed as a mirror, not a verdict. What triggers each decision. How certain we are about each pattern, and where we'd want to go deeper.</p>
+              <div class="proof-insight">
+                <p><strong>What you'll recognize:</strong> The moment someone names a pattern you've been running on for years but never put into words. Not because it was hidden &mdash; because you never had a reason to look.</p>
+              </div>
             </div>
           </div>
         </div>
 
-        <!-- Closed sections -->
+        <!-- Section 2: Where Things Are Breaking Down -->
         <div class="proof-section">
-          <div class="proof-sh">
+          <div class="proof-sh" onclick="toggleProof(this)">
             <span class="sh-label">Where Things Are Breaking Down</span>
             <span class="sh-icon">&#9662;</span>
           </div>
-        </div>
-        <div class="proof-section">
-          <div class="proof-sh">
-            <span class="sh-label">What Each Person Actually Does</span>
-            <span class="sh-icon">&#9662;</span>
-          </div>
-        </div>
-        <div class="proof-section">
-          <div class="proof-sh">
-            <span class="sh-label">Where You're Headed vs. Where You Said You're Going</span>
-            <span class="sh-icon">&#9662;</span>
-          </div>
-        </div>
-        <div class="proof-section">
-          <div class="proof-sh">
-            <span class="sh-label">Rules That May Have Outlived Their Reason</span>
-            <span class="sh-icon">&#9662;</span>
-          </div>
-        </div>
-        <div class="proof-section">
-          <div class="proof-sh">
-            <span class="sh-label">The Financial Shape</span>
-            <span class="sh-icon">&#9662;</span>
+          <div class="proof-panel">
+            <div class="proof-content">
+              <p>This section identifies where communication degrades between layers &mdash; where your intent arrives as something different than what you meant. Mixed signals, competing priorities, and the informal workarounds people built to get around gaps in the system.</p>
+              <p>Every finding is framed as a structural condition, not a personal failure. The environment is noisy, not the people. Workarounds that are currently holding something together are clearly marked &mdash; some things can't be removed until a replacement is in place.</p>
+              <div class="proof-insight">
+                <p><strong>What you'll recognize:</strong> The friction you stopped noticing because it became the way things are. The person quietly absorbing work that has nowhere else to go. The question your team stopped asking because the answer was always unclear.</p>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div class="proof-note">This is a representative sample. A full LUMA deliverable contains 20&ndash;40 findings across seven analytical dimensions, each grounded in direct quotes from your conversation.</div>
+        <!-- Section 3: What Each Person Actually Does -->
+        <div class="proof-section">
+          <div class="proof-sh" onclick="toggleProof(this)">
+            <span class="sh-label">What Each Person Actually Does</span>
+            <span class="sh-icon">&#9662;</span>
+          </div>
+          <div class="proof-panel">
+            <div class="proof-content">
+              <p>This section separates the work from the worker. Every person named in the conversation is mapped to the distinct roles they actually perform &mdash; not their job title, but the real functions they carry day to day.</p>
+              <p>Where one person holds multiple unacknowledged roles. Where critical work has no clear owner. Where you're personally absorbing functions that should live elsewhere. The real org chart, drawn from what you described rather than what's on paper.</p>
+              <div class="proof-insight">
+                <p><strong>What you'll recognize:</strong> How much someone on your team is actually carrying &mdash; and how much you're carrying yourself that you'd stopped counting.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 4: Where You're Headed vs. Where You Said You're Going -->
+        <div class="proof-section">
+          <div class="proof-sh" onclick="toggleProof(this)">
+            <span class="sh-label">Where You're Headed vs. Where You Said You're Going</span>
+            <span class="sh-icon">&#9662;</span>
+          </div>
+          <div class="proof-panel">
+            <div class="proof-content">
+              <p>This section compares your stated vision with your actual direction of travel. Where you say you're going, what your time and investment patterns suggest you're building, and where those two pictures diverge.</p>
+              <p>Unexamined assumptions embedded in the growth plan. Competing desires you haven't reconciled. The gap between the business you want to build and the business you want to run day to day &mdash; which are often very different things.</p>
+              <div class="proof-insight">
+                <p><strong>What you'll recognize:</strong> The tension you've been feeling but haven't had language for. Not a contradiction to resolve &mdash; a tradeoff to navigate with your eyes open.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 5: Rules That May Have Outlived Their Reason -->
+        <div class="proof-section">
+          <div class="proof-sh" onclick="toggleProof(this)">
+            <span class="sh-label">Rules That May Have Outlived Their Reason</span>
+            <span class="sh-icon">&#9662;</span>
+          </div>
+          <div class="proof-panel">
+            <div class="proof-content">
+              <p>This section surfaces the institutional memory shaping how you operate &mdash; the lessons learned, the battles fought, the scars that became permanent rules. Then it asks: does the original context still exist?</p>
+              <p>Some historical lessons are genuinely hard-won wisdom worth preserving and systematizing. Others are policies that outlived their threat. This section sorts them &mdash; with respect for why each rule was created in the first place.</p>
+              <div class="proof-insight">
+                <p><strong>What you'll recognize:</strong> The thing you've always done a certain way and never questioned. The story behind the rule you forgot was a story. The weight you might be ready to set down.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 6: The Financial Shape -->
+        <div class="proof-section">
+          <div class="proof-sh" onclick="toggleProof(this)">
+            <span class="sh-label">The Financial Shape</span>
+            <span class="sh-icon">&#9662;</span>
+          </div>
+          <div class="proof-panel">
+            <div class="proof-content">
+              <p>This section collects and organizes every financial signal from the conversation &mdash; not to analyze or advise, but to make the shape visible. Which parts of the business make money. Where effort is disproportionate to return. How you talk about pricing and what that reveals about positioning.</p>
+              <p>No specific numbers are required. The relative shape &mdash; what's growing, what's shrinking, where you invest versus where you defer &mdash; tells a story all on its own.</p>
+              <div class="proof-insight">
+                <p><strong>What you'll recognize:</strong> The financial picture you've been carrying in your gut, organized into something you can finally look at clearly.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="proof-note">Each section expands to reveal findings grounded in direct quotes from your conversation. The same document serves the principal at strategic altitude and the team at operational detail &mdash; self-selecting depth, one source of truth.</div>
       </div>
       <div class="proof-spectrum"></div>
     </div>
@@ -810,7 +893,7 @@ footer {
     <li><a href="/about">About</a></li>
     <li><a href="/contact">Contact</a></li>
   </ul>
-  <p class="footer-copy">&copy; 2026 LUMA</p>
+  <p class="footer-copy">&copy; 2026 LUMA LLC</p>
 </footer>
 
 <!-- ============================================
@@ -822,6 +905,12 @@ const nav = document.getElementById('nav');
 window.addEventListener('scroll', () => {
   nav.classList.toggle('scrolled', window.scrollY > 80);
 });
+
+// Proof accordion
+function toggleProof(sh) {
+  const section = sh.parentElement;
+  section.classList.toggle('open');
+}
 </script>
 
 </body>
