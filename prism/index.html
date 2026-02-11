@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Prism — LUMA</title>
+<meta name="description" content="One conversation. Several tuned lenses. A map of territory you've been walking through blind.">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Crect width='200' height='200' fill='%230A0A0F'/%3E%3Cpath d='M10 10L10 190L190 190L190 10L10 10' stroke='%23D4A853' stroke-width='22' fill='none' stroke-linecap='square'/%3E%3Crect x='66' y='66' width='68' height='68' fill='%23D4A853'/%3E%3C/svg%3E">
+<link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ============================================
+   LUMA BRAND TOKENS v1.0
+   ============================================ */
+:root {
+  --void-pure: #0A0A0F;
+  --void-deep: #101018;
+  --void-mid: #161622;
+  --void-surface: #1C1C2C;
+  --void-elevated: #242438;
+  --void-border: #2E2E44;
+
+  --tungsten: #D4A853;
+  --tungsten-bright: #E8C468;
+  --tungsten-dim: #A07D38;
+  --tungsten-glow: rgba(212, 168, 83, 0.15);
+  --tungsten-ghost: rgba(212, 168, 83, 0.06);
+
+  --spectrum-red: #E8453C;
+  --spectrum-orange: #F28C38;
+  --spectrum-amber: #E8B84B;
+  --spectrum-yellow: #F0D850;
+  --spectrum-lime: #A8D848;
+  --spectrum-green: #48B878;
+  --spectrum-teal: #38A8A8;
+  --spectrum-cyan: #38B8E8;
+  --spectrum-blue: #3878D8;
+  --spectrum-indigo: #5848C8;
+  --spectrum-violet: #8838B8;
+  --spectrum-magenta: #C838A8;
+
+  --surface-cream: #FAF6EF;
+  --surface-warm: #F5F0E6;
+  --surface-paper: #FDFBF7;
+
+  --text-lp: #E8E4DD;
+  --text-ls: #A8A4A0;
+  --text-lm: #686460;
+  --text-dp: #1A1A24;
+  --text-ds: #4A4A5A;
+  --text-dm: #7A7A8A;
+
+  --grad: linear-gradient(90deg,
+    var(--spectrum-red), var(--spectrum-orange), var(--spectrum-amber),
+    var(--spectrum-yellow), var(--spectrum-lime), var(--spectrum-green),
+    var(--spectrum-teal), var(--spectrum-cyan), var(--spectrum-blue),
+    var(--spectrum-indigo), var(--spectrum-violet), var(--spectrum-magenta));
+}
+
+/* ============================================
+   RESET & BASE
+   ============================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: 'Rubik', sans-serif;
+  background: var(--void-pure);
+  color: var(--text-lp);
+  min-height: 100vh;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* Prismatic atmosphere */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 15% 8%, rgba(232,69,60,0.04) 0%, transparent 50%),
+    radial-gradient(ellipse at 40% 15%, rgba(242,140,56,0.03) 0%, transparent 45%),
+    radial-gradient(ellipse at 60% 10%, rgba(240,216,80,0.025) 0%, transparent 40%),
+    radial-gradient(ellipse at 80% 20%, rgba(72,184,120,0.03) 0%, transparent 45%),
+    radial-gradient(ellipse at 20% 85%, rgba(56,120,216,0.035) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 90%, rgba(88,72,200,0.04) 0%, transparent 45%),
+    radial-gradient(ellipse at 80% 85%, rgba(136,56,184,0.03) 0%, transparent 40%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ============================================
+   NAVIGATION
+   ============================================ */
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(10, 10, 15, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.3s;
+}
+
+nav.scrolled {
+  border-bottom-color: var(--void-border);
+}
+
+.nav-mark {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  text-decoration: none;
+}
+
+.nav-wordmark {
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+nav.scrolled .nav-wordmark {
+  opacity: 1;
+}
+
+.nav-links {
+  display: flex;
+  gap: 32px;
+  list-style: none;
+}
+
+.nav-links a {
+  color: var(--text-ls);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  transition: color 0.2s;
+}
+
+.nav-links a:hover {
+  color: var(--tungsten);
+}
+
+.nav-links a.active {
+  color: var(--tungsten);
+}
+
+/* ============================================
+   LAYOUT
+   ============================================ */
+.page {
+  position: relative;
+  z-index: 1;
+}
+
+section {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+/* ============================================
+   PAGE HERO
+   ============================================ */
+.page-hero {
+  padding: 180px 40px 80px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.page-hero-label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--tungsten);
+  margin-bottom: 24px;
+  opacity: 0;
+  animation: fadeUp 1s ease 0.2s forwards;
+}
+
+.page-hero h1 {
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: 28px;
+  opacity: 0;
+  animation: fadeUp 1s ease 0.4s forwards;
+}
+
+.page-hero-intro {
+  font-size: 17px;
+  line-height: 1.85;
+  color: var(--text-ls);
+  max-width: 640px;
+  opacity: 0;
+  animation: fadeUp 1s ease 0.6s forwards;
+}
+
+.page-hero-intro strong {
+  color: var(--text-lp);
+}
+
+.page-hero-intro em {
+  color: var(--tungsten);
+  font-style: normal;
+}
+
+/* ============================================
+   SPECTRUM DIVIDER
+   ============================================ */
+.spectrum-line {
+  height: 2px;
+  background: var(--grad);
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* ============================================
+   NARRATIVE SECTIONS
+   ============================================ */
+.narrative {
+  padding-top: 80px;
+  padding-bottom: 80px;
+}
+
+.narrative-label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--tungsten);
+  margin-bottom: 32px;
+}
+
+.narrative p {
+  font-size: 17px;
+  line-height: 1.85;
+  color: var(--text-ls);
+  margin-bottom: 24px;
+}
+
+.narrative p strong {
+  color: var(--text-lp);
+}
+
+.narrative p em {
+  color: var(--tungsten);
+  font-style: normal;
+}
+
+/* ============================================
+   TIMELINE — HOW IT UNFOLDS
+   ============================================ */
+.timeline {
+  margin: 48px 0 0;
+}
+
+.timeline-phase {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 0;
+  position: relative;
+  padding-bottom: 48px;
+}
+
+.timeline-phase:last-child {
+  padding-bottom: 0;
+}
+
+/* Vertical line */
+.timeline-phase::before {
+  content: '';
+  position: absolute;
+  left: 60px;
+  top: 24px;
+  bottom: 0;
+  width: 1px;
+  background: var(--void-border);
+}
+
+.timeline-phase:last-child::before {
+  display: none;
+}
+
+.timeline-marker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 4px;
+}
+
+.timeline-dot {
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--tungsten);
+  background: var(--void-pure);
+  position: relative;
+  z-index: 1;
+}
+
+.timeline-time {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--text-lm);
+  margin-top: 8px;
+  letter-spacing: 0.04em;
+}
+
+.timeline-body {
+  padding-left: 24px;
+}
+
+.timeline-body h3 {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-lp);
+  margin-bottom: 12px;
+}
+
+.timeline-body p {
+  font-size: 15px;
+  line-height: 1.75;
+  color: var(--text-ls);
+  margin-bottom: 12px;
+}
+
+.timeline-body p:last-child {
+  margin-bottom: 0;
+}
+
+.timeline-body strong {
+  color: var(--text-lp);
+}
+
+.timeline-detail {
+  font-size: 14px;
+  color: var(--text-lm);
+  font-style: italic;
+  margin-top: 8px;
+}
+
+/* ============================================
+   LENSES — HIGH LEVEL
+   ============================================ */
+.lenses-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--void-border);
+  border: 1px solid var(--void-border);
+  margin: 48px 0 0;
+}
+
+.lens-card {
+  background: var(--void-deep);
+  padding: 28px 24px;
+  position: relative;
+}
+
+.lens-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  opacity: 0.6;
+}
+
+.lens-card:nth-child(1)::before { background: var(--tungsten); }
+.lens-card:nth-child(2)::before { background: var(--spectrum-cyan); }
+.lens-card:nth-child(3)::before { background: var(--spectrum-red); }
+.lens-card:nth-child(4)::before { background: var(--spectrum-green); }
+.lens-card:nth-child(5)::before { background: var(--spectrum-blue); }
+.lens-card:nth-child(6)::before { background: var(--spectrum-violet); }
+.lens-card:nth-child(7)::before { background: var(--spectrum-orange); }
+
+.lens-card h4 {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-lp);
+  margin-bottom: 8px;
+}
+
+.lens-card p {
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--text-lm);
+}
+
+.lens-card.full-width {
+  grid-column: 1 / -1;
+}
+
+/* ============================================
+   DELIVERABLE
+   ============================================ */
+.deliverable-box {
+  border: 1px solid var(--void-border);
+  background: var(--void-surface);
+  padding: 32px;
+  margin: 48px 0 0;
+  position: relative;
+}
+
+.deliverable-box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--spectrum-blue), var(--spectrum-cyan), var(--spectrum-green));
+}
+
+.deliverable-box h4 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--tungsten);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+.deliverable-box p {
+  font-size: 15px;
+  line-height: 1.75;
+  color: var(--text-ls);
+  margin-bottom: 16px;
+}
+
+.deliverable-box p:last-child {
+  margin-bottom: 0;
+}
+
+.deliverable-box strong {
+  color: var(--text-lp);
+}
+
+/* ============================================
+   ENGAGEMENT DETAILS
+   ============================================ */
+.details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--void-border);
+  border: 1px solid var(--void-border);
+  margin: 48px 0 0;
+}
+
+.detail-card {
+  background: var(--void-deep);
+  padding: 28px 24px;
+}
+
+.detail-card.full-width {
+  grid-column: 1 / -1;
+}
+
+.detail-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--tungsten);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.detail-value {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-lp);
+  margin-bottom: 6px;
+}
+
+.detail-note {
+  font-size: 14px;
+  color: var(--text-lm);
+  line-height: 1.6;
+}
+
+/* ============================================
+   DOOR (CTA)
+   ============================================ */
+.door {
+  padding-top: 0;
+  padding-bottom: 160px;
+  text-align: center;
+}
+
+.door h2 {
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--text-lp);
+  margin-bottom: 12px;
+}
+
+.door-sub {
+  font-size: 16px;
+  color: var(--text-lm);
+  margin-bottom: 48px;
+}
+
+.door-form {
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.door-input-wrap {
+  display: flex;
+  gap: 0;
+  border: 1px solid var(--void-border);
+  transition: border-color 0.2s;
+}
+
+.door-input-wrap:focus-within {
+  border-color: var(--tungsten);
+}
+
+.door-input {
+  flex: 1;
+  padding: 16px 20px;
+  background: var(--void-deep);
+  border: none;
+  color: var(--text-lp);
+  font-family: 'Rubik', sans-serif;
+  font-size: 15px;
+  outline: none;
+}
+
+.door-input::placeholder {
+  color: var(--text-lm);
+}
+
+.door-btn {
+  padding: 16px 28px;
+  background: var(--tungsten);
+  color: var(--void-pure);
+  border: none;
+  font-family: 'Rubik', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.door-btn:hover {
+  background: var(--tungsten-bright);
+}
+
+.door-privacy {
+  margin-top: 16px;
+  font-size: 12px;
+  color: var(--text-lm);
+}
+
+/* ============================================
+   FOOTER
+   ============================================ */
+footer {
+  border-top: 2px solid;
+  border-image: var(--grad) 1;
+  padding: 48px 40px;
+  text-align: center;
+}
+
+.footer-mark {
+  margin-bottom: 24px;
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  list-style: none;
+  margin-bottom: 32px;
+}
+
+.footer-links a {
+  color: var(--text-lm);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  transition: color 0.2s;
+}
+
+.footer-links a:hover {
+  color: var(--tungsten);
+}
+
+.footer-copy {
+  font-size: 12px;
+  color: var(--text-lm);
+  font-family: 'DM Mono', monospace;
+  letter-spacing: 0.04em;
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 768px) {
+  nav { padding: 16px 20px; }
+  .nav-links { gap: 20px; }
+  .nav-links a { font-size: 12px; }
+
+  .page-hero { padding: 140px 24px 60px; }
+  .page-hero h1 { font-size: 28px; }
+  .page-hero-intro { font-size: 15px; }
+
+  section { padding-left: 24px; padding-right: 24px; }
+
+  .timeline-phase { grid-template-columns: 80px 1fr; }
+  .timeline-phase::before { left: 40px; }
+
+  .lenses-grid { grid-template-columns: 1fr; }
+  .details-grid { grid-template-columns: 1fr; }
+
+  .door { padding-bottom: 100px; }
+  .door h2 { font-size: 22px; }
+  .door-input-wrap { flex-direction: column; }
+  .door-btn { padding: 14px 20px; }
+
+  .footer-links { flex-direction: column; gap: 16px; }
+}
+
+@media (max-width: 480px) {
+  .page-hero h1 { font-size: 24px; }
+  .nav-links { display: none; }
+  .timeline-phase { grid-template-columns: 1fr; }
+  .timeline-marker { flex-direction: row; gap: 12px; padding-bottom: 12px; }
+  .timeline-phase::before { display: none; }
+  .timeline-body { padding-left: 0; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================
+     NAVIGATION
+     ============================================ -->
+<nav id="nav">
+  <a href="/" class="nav-mark">
+    <svg width="28" height="28" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M10 10 L10 190 L190 190 L190 10 L10 10" stroke="#D4A853" stroke-width="12" fill="none" stroke-linecap="square"/>
+      <path d="M40 52 L40 160 L160 160 L160 52" stroke="#D4A853" stroke-width="11" fill="none" stroke-linecap="square"/>
+      <path d="M68 68 L68 132 L132 132 L132 68 L112 68" stroke="#D4A853" stroke-width="10" fill="none" stroke-linecap="square"/>
+      <path d="M88 68 L68 68" stroke="#D4A853" stroke-width="10" stroke-linecap="square"/>
+      <rect x="84" y="84" width="32" height="32" fill="#D4A853"/>
+    </svg>
+    <svg class="nav-wordmark" width="100" height="20" viewBox="0 0 720 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M20 12 L20 148 L136 148" stroke="#D4A853" stroke-width="11" stroke-linecap="square"/>
+      <path d="M172 12 L172 148 L296 148 L296 12" stroke="#D4A853" stroke-width="11" stroke-linecap="square"/>
+      <path d="M332 148 L332 12 L400 12 L400 40" stroke="#D4A853" stroke-width="11" stroke-linecap="square"/>
+      <path d="M424 40 L424 12 L492 12 L492 148" stroke="#D4A853" stroke-width="11" stroke-linecap="square"/>
+      <path d="M528 148 L528 12 L652 12 L652 148" stroke="#D4A853" stroke-width="11" stroke-linecap="square"/>
+      <path d="M528 80 L652 80" stroke="#D4A853" stroke-width="11" stroke-linecap="square"/>
+    </svg>
+  </a>
+  <ul class="nav-links">
+    <li><a href="/prism" class="active">The Prism</a></li>
+    <li><a href="/approach">Approach</a></li>
+    <li><a href="/about">About</a></li>
+    <li><a href="/contact">Contact</a></li>
+  </ul>
+</nav>
+
+<div class="page">
+
+  <!-- ==========================================
+       PAGE HERO
+       ========================================== -->
+  <section class="page-hero">
+    <div class="page-hero-label">The Prism</div>
+    <h1>One conversation. Several tuned lenses. A map of what you couldn't see.</h1>
+    <p class="page-hero-intro">The Prism is LUMA's first analytical instrument. It takes a single recorded conversation with the person who runs your business and processes it through several calibrated lenses &mdash; each examining a different dimension of how your organization actually operates. What comes back is not a summary. It's a map of territory you've been walking through blind.</p>
+  </section>
+
+  <div class="spectrum-line"></div>
+
+  <!-- ==========================================
+       HOW IT UNFOLDS
+       ========================================== -->
+  <section class="narrative">
+    <div class="narrative-label">How it unfolds</div>
+    <p>The engagement has four steps. The first is context. The second is yours. The third is the instrument's. The fourth is ours together.</p>
+
+    <div class="timeline">
+
+      <!-- Phase 0: The Baseline -->
+      <div class="timeline-phase">
+        <div class="timeline-marker">
+          <div class="timeline-dot"></div>
+          <div class="timeline-time">15 min</div>
+        </div>
+        <div class="timeline-body">
+          <h3>The Baseline</h3>
+          <p>Before we talk, we ask for whatever you already have &mdash; an org chart, a brand guide, role descriptions, process documents. Whatever exists. Many businesses don't have much, and that's fine. <strong>The absence is as informative as the presence.</strong></p>
+          <p>If you have high-level financials or year-over-year numbers you're willing to share, they sharpen the analysis considerably. But nothing is required. This isn't homework. It's context.</p>
+          <p class="timeline-detail">A short form and a place to upload documents. Takes about 15 minutes if you have things ready. Less if you don't.</p>
+        </div>
+      </div>
+
+      <!-- Phase 1: The Overview -->
+      <div class="timeline-phase">
+        <div class="timeline-marker">
+          <div class="timeline-dot"></div>
+          <div class="timeline-time">60 min</div>
+        </div>
+        <div class="timeline-body">
+          <h3>The Overview</h3>
+          <p>A single conversation with a LUMA practitioner. Sixty minutes. No preparation required beyond showing up ready to talk honestly about how things actually work &mdash; not the polished version, the real one.</p>
+          <p>This is not an interview. There is no questionnaire. You talk about your business the way you'd talk to someone you trust who asked the right questions. Vision, frustrations, history, operations, the hard parts, the parts that work, the parts you've stopped thinking about.</p>
+          <p class="timeline-detail">The conversation is recorded with your permission. The recording is the raw material.</p>
+        </div>
+      </div>
+
+      <!-- Phase 2: The Analysis -->
+      <div class="timeline-phase">
+        <div class="timeline-marker">
+          <div class="timeline-dot"></div>
+          <div class="timeline-time">1&ndash;3 days</div>
+        </div>
+        <div class="timeline-body">
+          <h3>The Analysis</h3>
+          <p>Your conversation is processed through the Prism &mdash; several analytical lenses, each calibrated to a different dimension of your operations. Each lens examines the same conversation from a different angle, surfaces different patterns, and produces findings grounded in your own words.</p>
+          <p>The lenses don't summarize what you said. They surface what you revealed without realizing it &mdash; the decision logic you've never articulated, the friction you've stopped noticing, the historical lessons still shaping your present, the gap between where you're headed and where you said you were going.</p>
+        </div>
+      </div>
+
+      <!-- Phase 3: The Readout -->
+      <div class="timeline-phase">
+        <div class="timeline-marker">
+          <div class="timeline-dot"></div>
+          <div class="timeline-time">30 min</div>
+        </div>
+        <div class="timeline-body">
+          <h3>The Readout</h3>
+          <p>A brief walkthrough of what the analysis surfaced. Not a presentation &mdash; a focused look at the most important findings and what they suggest about your business. You'll see your operations mapped in a way you've never seen them before.</p>
+          <p>The deliverable is yours to keep regardless of what you decide next. A multi-resolution document where you see the strategic picture and your team sees operational detail &mdash; the same analysis, self-selecting depth. Every finding grounded in direct quotes from your conversation.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="spectrum-line"></div>
+
+  <!-- ==========================================
+       WHAT THE LENSES EXAMINE
+       ========================================== -->
+  <section class="narrative">
+    <div class="narrative-label">What the lenses examine</div>
+    <p>Each lens is calibrated to a dimension of your operations that is typically invisible &mdash; not because it's hidden, but because no one has had a reason to look. The same conversation yields different findings through each lens.</p>
+
+    <div class="lenses-grid">
+      <div class="lens-card">
+        <h4>Decision Logic</h4>
+        <p>How you actually make decisions &mdash; the hierarchy of criteria you use instinctively but have never articulated.</p>
+      </div>
+      <div class="lens-card">
+        <h4>Signal Clarity</h4>
+        <p>Where communication degrades between layers. Mixed signals, workarounds, and friction nobody notices anymore.</p>
+      </div>
+      <div class="lens-card">
+        <h4>Institutional Memory</h4>
+        <p>The historical lessons still shaping how you operate &mdash; and which rules may have outlived their original context.</p>
+      </div>
+      <div class="lens-card">
+        <h4>Role Distribution</h4>
+        <p>Who actually does what. Where one person carries six roles. Where critical work has no owner.</p>
+      </div>
+      <div class="lens-card">
+        <h4>Direction of Travel</h4>
+        <p>Where you said you're going versus where your decisions, time, and investment suggest you're actually headed.</p>
+      </div>
+      <div class="lens-card">
+        <h4>Market Perception</h4>
+        <p>How you see your business versus how your own stories suggest it's experienced by clients and the market.</p>
+      </div>
+      <div class="lens-card full-width">
+        <h4>Financial Shape</h4>
+        <p>The relative shape of how your business earns and spends &mdash; not a financial audit, but the picture that emerges from how you talk about money.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="spectrum-line"></div>
+
+  <!-- ==========================================
+       WHAT YOU RECEIVE
+       ========================================== -->
+  <section class="narrative">
+    <div class="narrative-label">What you receive</div>
+    <p><strong>A single document built for two audiences at once.</strong> You read it at strategic altitude &mdash; where the business is headed, what's working, what's quietly breaking. Your team reads it at operational depth &mdash; who does what, where things get stuck, which processes need attention. Same analysis. Self-selecting resolution.</p>
+
+    <div class="deliverable-box">
+      <h4>Inside the deliverable</h4>
+      <p>Findings across every analytical dimension, each grounded in direct quotes from your conversation. Not generalized advice &mdash; specific observations about <strong>your</strong> business, in <strong>your</strong> language, based on what <strong>you</strong> said.</p>
+      <p>Where stated priorities diverge from revealed behavior &mdash; framed as a mirror, not a verdict. Where friction exists that nobody's measuring. Where historical lessons are still serving you and where they're quietly costing you. Where the vision and the direction of travel have drifted apart.</p>
+      <p>Every finding includes a confidence rating. Where we're reading between the lines, we say so. Where we'd want to go deeper, we tell you what we'd ask next.</p>
+    </div>
+  </section>
+
+  <div class="spectrum-line"></div>
+
+  <!-- ==========================================
+       ENGAGEMENT DETAILS
+       ========================================== -->
+  <section class="narrative">
+    <div class="narrative-label">What it asks of you</div>
+
+    <div class="details-grid">
+      <div class="detail-card">
+        <div class="detail-label">Your time</div>
+        <div class="detail-value">Under two hours</div>
+        <div class="detail-note">15 minutes for the Baseline. 60 minutes for the Overview. 30 minutes for the Readout. That's your entire commitment.</div>
+      </div>
+      <div class="detail-card">
+        <div class="detail-label">Preparation</div>
+        <div class="detail-value">Whatever you have</div>
+        <div class="detail-note">Org chart, brand guide, process docs, financials &mdash; anything that tells the story of your business. If you have nothing, that's a finding in itself.</div>
+      </div>
+      <div class="detail-card">
+        <div class="detail-label">Turnaround</div>
+        <div class="detail-value">1&ndash;3 business days</div>
+        <div class="detail-note">From the Overview conversation to a completed deliverable ready for the Readout.</div>
+      </div>
+      <div class="detail-card">
+        <div class="detail-label">Who should be on the call</div>
+        <div class="detail-value">The decision maker</div>
+        <div class="detail-note">The person who can describe how the business actually operates. Usually the founder or principal.</div>
+      </div>
+      <div class="detail-card full-width">
+        <div class="detail-label">One requirement</div>
+        <div class="detail-value">Honesty</div>
+        <div class="detail-note">The Prism can only analyze what you give it. The polished version of your business produces a polished, useless output. The real version produces a map you can actually use.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       THE DOOR
+       ========================================== -->
+  <section class="door">
+    <h2>What would you like to see more clearly?</h2>
+    <p class="door-sub">One conversation. Sixty minutes. No obligation.</p>
+    <div class="door-form">
+      <div class="door-input-wrap">
+        <input type="email" class="door-input" placeholder="Your email" aria-label="Email address">
+        <button class="door-btn" type="button">Get in touch</button>
+      </div>
+      <p class="door-privacy">No spam. No mailing list. A human will reply.</p>
+    </div>
+  </section>
+
+</div>
+
+<!-- ============================================
+     FOOTER
+     ============================================ -->
+<footer>
+  <div class="footer-mark">
+    <svg width="32" height="32" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M10 10 L10 190 L190 190 L190 10 L10 10" stroke="#D4A853" stroke-width="12" fill="none" stroke-linecap="square"/>
+      <path d="M40 52 L40 160 L160 160 L160 52" stroke="#D4A853" stroke-width="11" fill="none" stroke-linecap="square"/>
+      <path d="M68 68 L68 132 L132 132 L132 68 L112 68" stroke="#D4A853" stroke-width="10" fill="none" stroke-linecap="square"/>
+      <path d="M88 68 L68 68" stroke="#D4A853" stroke-width="10" stroke-linecap="square"/>
+      <rect x="84" y="84" width="32" height="32" fill="#D4A853"/>
+    </svg>
+  </div>
+  <ul class="footer-links">
+    <li><a href="/prism">The Prism</a></li>
+    <li><a href="/approach">Approach</a></li>
+    <li><a href="/about">About</a></li>
+    <li><a href="/contact">Contact</a></li>
+  </ul>
+  <p class="footer-copy">&copy; 2026 LUMA LLC</p>
+</footer>
+
+<!-- ============================================
+     SCRIPTS
+     ============================================ -->
+<script>
+// Nav scroll behavior
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 80);
+});
+</script>
+
+</body>
+</html>
