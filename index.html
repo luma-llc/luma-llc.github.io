@@ -63,6 +63,7 @@ nav.scrolled .nav-wordmark{opacity:1}
 .phase{display:none}
 .phase.active{display:block;animation:fadeUp 0.6s ease forwards}
 
+.reflecting-text{text-align:center;color:var(--text-m);font-size:15px;font-style:italic;padding:40px 0}
 
 .reflection-text{font-size:16px;color:var(--text-s);line-height:1.9;margin-bottom:20px}
 .reflection-content{cursor:text;margin-bottom:40px}
@@ -113,7 +114,7 @@ footer{border-top:1px solid;border-image:var(--grad) 1;padding:48px 40px;text-al
       <svg width="280" height="56" viewBox="0 0 720 160" fill="none"><path d="M20 12L20 148L136 148" stroke="#D4A853" stroke-width="11" stroke-linecap="square"/><path d="M172 12L172 148L296 148L296 12" stroke="#D4A853" stroke-width="11" stroke-linecap="square"/><path d="M332 148L332 12L400 12L400 40" stroke="#D4A853" stroke-width="11" stroke-linecap="square"/><path d="M424 40L424 12L492 12L492 148" stroke="#D4A853" stroke-width="11" stroke-linecap="square"/><path d="M528 148L528 12L652 12L652 148" stroke="#D4A853" stroke-width="11" stroke-linecap="square"/><path d="M528 80L652 80" stroke="#D4A853" stroke-width="11" stroke-linecap="square"/></svg>
     </div>
     <div class="spectrum-line-hero"></div>
-    <p class="hero-claim">When&rsquo;s the last time someone asked you a question about your work that you didn&rsquo;t immediately know the answer to?<span class="hero-tap">Tap to begin</span></p>
+    <p class="hero-claim">When is the last time you were asked a question you didn&rsquo;t immediately have an answer for?<span class="hero-tap">Tap to begin</span></p>
   </div>
 </div>
 
@@ -140,6 +141,11 @@ footer{border-top:1px solid;border-image:var(--grad) 1;padding:48px 40px;text-al
     <div class="question-text" id="q-2"></div>
     <textarea class="question-input" id="a-2" placeholder="Take your time."></textarea>
     <div class="question-nav"><button class="btn-p" onclick="getReflection()">Show me</button></div>
+  </div>
+
+  <!-- Loading -->
+  <div class="phase" id="loading-phase">
+    <p class="reflecting-text">Reflecting...</p>
   </div>
 
   <!-- Reflection -->
@@ -261,6 +267,7 @@ async function getReflection() {
   // Hide question, show reflecting state
   document.getElementById("step-" + currentStep).classList.remove("active");
   document.getElementById("well-intro").style.display = "none";
+  document.getElementById("loading-phase").classList.add("active");
   document.getElementById("well").scrollIntoView({ behavior: "smooth", block: "start" });
 
   try {
@@ -285,6 +292,7 @@ async function getReflection() {
     container.appendChild(el);
   });
 
+  document.getElementById("loading-phase").classList.remove("active");
   document.getElementById("reflection-phase").classList.add("active");
   document.getElementById("post-reflection").style.display = "";
   document.getElementById("bridge").style.display = "";
