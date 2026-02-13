@@ -41,6 +41,8 @@ nav.scrolled .nav-wordmark{opacity:1}
 
 .well{padding:60px 40px 40px;max-width:640px;margin:0 auto;position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;justify-content:center;opacity:0;transition:opacity 0.8s ease 0.4s}
 .well.visible{opacity:1}
+.well-mark{text-align:center;margin-bottom:32px}
+.well-mark svg{animation:heroGlow 3s ease-in-out infinite}
 .well-intro{font-size:16px;color:var(--text-m);text-align:center;margin-bottom:64px;line-height:1.8}
 .well-progress{display:flex;justify-content:center;gap:8px;margin-bottom:56px;transition:opacity 0.5s}
 .progress-dot{width:6px;height:6px;background:var(--void-border);transition:all 0.3s}
@@ -109,17 +111,6 @@ footer{border-top:1px solid;border-image:var(--grad) 1;padding:48px 40px;text-al
 </head>
 <body>
 
-<nav id="nav">
-  <a href="/" class="nav-mark">
-    <svg width="28" height="28" viewBox="0 0 200 200" fill="none"><path d="M10 10L10 190L190 190L190 10L10 10" stroke="#D4A853" stroke-width="12" fill="none" stroke-linecap="square"/><path d="M40 52L40 160L160 160L160 52" stroke="#D4A853" stroke-width="11" fill="none" stroke-linecap="square"/><path d="M68 68L68 132L132 132L132 68L112 68" stroke="#D4A853" stroke-width="10" fill="none" stroke-linecap="square"/><path d="M88 68L68 68" stroke="#D4A853" stroke-width="10" stroke-linecap="square"/><rect x="84" y="84" width="32" height="32" fill="#D4A853"/></svg>
-    <svg class="nav-wordmark" width="100" height="20" viewBox="0 0 720 160" fill="none"><path d="M20 12L20 148L136 148" stroke="#D4A853" stroke-width="11" stroke-linecap="square"/><path d="M172 12L172 148L296 148L296 12" stroke="#D4A853" stroke-width="11" stroke-linecap="square"/><path d="M332 148L332 12L400 12L400 40" stroke="#D4A853" stroke-width="11" stroke-linecap="square"/><path d="M424 40L424 12L492 12L492 148" stroke="#D4A853" stroke-width="11" stroke-linecap="square"/><path d="M528 148L528 12L652 12L652 148" stroke="#D4A853" stroke-width="11" stroke-linecap="square"/><path d="M528 80L652 80" stroke="#D4A853" stroke-width="11" stroke-linecap="square"/></svg>
-  </a>
-  <ul class="nav-links">
-    <li><a href="/prism">The Prism</a></li>
-    <li><a href="/approach">Approach</a></li>
-    <li><a href="/about">About</a></li>
-  </ul>
-</nav>
 
 <div class="hero">
   <div class="hero-cta" onclick="beginReflection()">
@@ -135,6 +126,9 @@ footer{border-top:1px solid;border-image:var(--grad) 1;padding:48px 40px;text-al
 </div>
 
 <div class="well" id="well">
+  <div class="well-mark" id="well-mark">
+    <svg width="40" height="40" viewBox="0 0 200 200" fill="none"><path d="M10 10L10 190L190 190L190 10L10 10" stroke="#D4A853" stroke-width="5" fill="none" stroke-linecap="square"/><path d="M38 50L38 162L162 162L162 50" stroke="#D4A853" stroke-width="4.5" fill="none" stroke-linecap="square"/><path d="M66 66L66 134L134 134L134 66L114 66" stroke="#D4A853" stroke-width="4" fill="none" stroke-linecap="square"/><path d="M86 66L66 66" stroke="#D4A853" stroke-width="4" stroke-linecap="square"/><rect x="88" y="88" width="24" height="24" fill="#D4A853"/></svg>
+  </div>
   <p class="well-intro" id="well-intro">Here are three. Sit with them.</p>
   <div class="well-progress" id="progress">
     <div class="progress-dot current" id="dot-0"></div>
@@ -212,14 +206,10 @@ footer{border-top:1px solid;border-image:var(--grad) 1;padding:48px 40px;text-al
 <div class="spectrum-line" id="post-reflection" style="display:none"></div>
 
 <div class="bridge" id="bridge" style="display:none">
-  <p>That was the surface. Three questions, a quick draw. The full version is a sixty-minute conversation and seven trained perspectives, all listening to the same material. What one voice surfaces is a pattern. What several voices surface together is the whole picture.</p>
-  <a href="/prism" class="bridge-link">How it works &rarr;</a>
+  <p>That was the surface. Three questions, a quick draw. The full version is a sixty-minute conversation and seven trained perspectives, all listening to the same material.</p>
 </div>
 
-<footer id="footer" style="display:none">>
-  <div class="footer-mark">
-    <svg width="28" height="28" viewBox="0 0 200 200" fill="none"><path d="M10 10L10 190L190 190L190 10L10 10" stroke="#D4A853" stroke-width="12" fill="none" stroke-linecap="square"/><path d="M40 52L40 160L160 160L160 52" stroke="#D4A853" stroke-width="11" fill="none" stroke-linecap="square"/><path d="M68 68L68 132L132 132L132 68L112 68" stroke="#D4A853" stroke-width="10" fill="none" stroke-linecap="square"/><path d="M88 68L68 68" stroke="#D4A853" stroke-width="10" stroke-linecap="square"/><rect x="84" y="84" width="32" height="32" fill="#D4A853"/></svg>
-  </div>
+<footer id="footer" style="display:none">
   <ul class="footer-links">
     <li><a href="/prism">The Prism</a></li>
     <li><a href="/approach">Approach</a></li>
@@ -328,7 +318,6 @@ async function getReflection() {
   document.getElementById("progress").classList.remove("reflecting");
   document.getElementById("progress").style.opacity = "0.3";
   document.getElementById("reflection-phase").classList.add("active");
-  document.getElementById("nav").classList.add("visible");
   document.getElementById("post-reflection").style.display = "";
   document.getElementById("bridge").style.display = "";
   document.getElementById("footer").style.display = "";
