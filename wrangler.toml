@@ -1,0 +1,10 @@
+name = "luma-reflection"
+main = "functions/reflect.js"
+compatibility_date = "2024-01-01"
+
+[vars]
+# Non-secret config goes here
+
+# Secrets are set via CLI:
+# npx wrangler secret put ANTHROPIC_API_KEY
+# npx wrangler secret put GOOGLE_SHEET_WEBHOOK
