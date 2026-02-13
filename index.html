@@ -135,7 +135,7 @@ footer{border-top:1px solid;border-image:var(--grad) 1;padding:48px 40px;text-al
 </div>
 
 <div class="well" id="well">
-  <p class="well-intro">Here are three. Sit with them.</p>
+  <p class="well-intro" id="well-intro">Here are three. Sit with them.</p>
   <div class="well-progress" id="progress">
     <div class="progress-dot current" id="dot-0"></div>
     <div class="progress-dot" id="dot-1"></div>
@@ -298,6 +298,7 @@ async function getReflection() {
   document.getElementById("dot-" + currentStep).classList.add("filled");
   [0,1,2].forEach(i => { document.getElementById("dot-" + i).classList.remove("filled","current"); });
   document.getElementById("progress").classList.add("reflecting");
+  document.getElementById("well-intro").style.display = "none";
   document.getElementById("loading-phase").classList.add("active");
   document.getElementById("well").scrollIntoView({ behavior: "smooth", block: "start" });
 
