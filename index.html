@@ -18,7 +18,8 @@ html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
 body{font-family:'Rubik',sans-serif;background:var(--void);color:var(--text-p);min-height:100vh;line-height:1.6;overflow-x:hidden}
 body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 15% 8%,rgba(232,69,60,0.04) 0%,transparent 50%),radial-gradient(ellipse at 40% 15%,rgba(242,140,56,0.03) 0%,transparent 45%),radial-gradient(ellipse at 60% 10%,rgba(240,216,80,0.025) 0%,transparent 40%),radial-gradient(ellipse at 80% 20%,rgba(72,184,120,0.03) 0%,transparent 45%),radial-gradient(ellipse at 20% 85%,rgba(56,120,216,0.035) 0%,transparent 50%),radial-gradient(ellipse at 50% 90%,rgba(88,72,200,0.04) 0%,transparent 45%),radial-gradient(ellipse at 80% 85%,rgba(136,56,184,0.03) 0%,transparent 40%);pointer-events:none;z-index:0}
 
-nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:20px 40px;display:flex;justify-content:space-between;align-items:center;background:rgba(10,10,15,0.85);backdrop-filter:blur(12px);border-bottom:1px solid transparent;transition:border-color 0.3s}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:20px 40px;display:flex;justify-content:space-between;align-items:center;background:rgba(10,10,15,0.85);backdrop-filter:blur(12px);border-bottom:1px solid transparent;transition:border-color 0.3s, opacity 0.5s, transform 0.5s;opacity:0;transform:translateY(-100%);pointer-events:none}
+nav.visible{opacity:1;transform:translateY(0);pointer-events:auto}
 nav.scrolled{border-bottom-color:var(--void-border)}
 .nav-mark{display:flex;align-items:center;gap:16px;text-decoration:none}
 .nav-wordmark{opacity:0;transition:opacity 0.3s}
@@ -27,16 +28,19 @@ nav.scrolled .nav-wordmark{opacity:1}
 .nav-links a{color:var(--text-s);text-decoration:none;font-size:13px;font-weight:500;letter-spacing:0.04em;transition:color 0.2s}
 .nav-links a:hover{color:var(--tungsten)}
 
-.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:80px 40px;position:relative;z-index:1}
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:80px 40px;position:fixed;inset:0;z-index:10;transition:opacity 0.8s ease;background:var(--void)}
+.hero.dissolved{opacity:0;pointer-events:none}
 .hero-mark{margin-bottom:48px;opacity:0;animation:fadeIn 1.2s ease 0.3s forwards}
 .hero-wordmark{margin-bottom:40px;opacity:0;animation:fadeIn 1.2s ease 0.6s forwards}
-.spectrum-line-hero{height:2px;width:100%;max-width:480px;background:var(--grad);margin-bottom:48px;opacity:0;animation:fadeIn 1.2s ease 0.9s forwards}
+.spectrum-line-hero{height:2px;width:100%;max-width:480px;background:linear-gradient(90deg, transparent, var(--tungsten-dim), var(--tungsten), var(--tungsten-dim), transparent);margin-bottom:48px;opacity:0;animation:fadeIn 1.2s ease 0.9s forwards}
 .hero-claim{font-size:20px;font-weight:400;line-height:1.7;color:var(--text-s);max-width:480px;opacity:0;animation:fadeUp 1s ease 1.2s forwards}
-.scroll-cue{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);opacity:0;animation:fadeIn 1s ease 2s forwards;cursor:pointer}
-.scroll-cue span{display:block;width:1px;height:32px;background:var(--tungsten-dim);margin:0 auto 8px;animation:pulse 2s ease infinite}
-.scroll-cue p{font-size:11px;color:var(--text-m);letter-spacing:0.1em;text-transform:uppercase;font-family:'DM Mono',monospace}
+.hero-tap{display:block;margin-top:24px;font-size:13px;color:var(--tungsten);letter-spacing:0.12em;text-transform:uppercase;font-family:'DM Mono',monospace}
+.hero-cta{cursor:pointer}
+.hero-mark svg{animation:heroGlow 3s ease-in-out 2.5s infinite}
+@keyframes heroGlow{0%,100%{filter:brightness(0.7);opacity:0.7}50%{filter:brightness(1.4);opacity:1}}
 
-.well{padding:100px 40px 40px;max-width:640px;margin:0 auto;position:relative;z-index:1}
+.well{padding:60px 40px 40px;max-width:640px;margin:0 auto;position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;justify-content:center;opacity:0;transition:opacity 0.8s ease 0.4s}
+.well.visible{opacity:1}
 .well-intro{font-size:16px;color:var(--text-m);text-align:center;margin-bottom:64px;line-height:1.8}
 .well-progress{display:flex;justify-content:center;gap:8px;margin-bottom:56px;transition:opacity 0.5s}
 .progress-dot{width:6px;height:6px;background:var(--void-border);transition:all 0.3s}
@@ -60,10 +64,10 @@ nav.scrolled .nav-wordmark{opacity:1}
 .phase{display:none}
 .phase.active{display:block;animation:fadeUp 0.6s ease forwards}
 
-.loading-text{text-align:center;color:var(--text-m);font-size:15px;font-style:italic;padding:40px 0;display:flex;align-items:center;justify-content:center;gap:4px}
-.loading-dot{display:inline-block;width:8px;height:8px;border-radius:4px;background:var(--void-border);margin:0 4px;vertical-align:middle;animation:litpill 1.8s ease-in-out infinite}
-.loading-dot:nth-child(2){animation-delay:0.3s}
-.loading-dot:nth-child(3){animation-delay:0.6s}
+.loading-text{text-align:center;color:var(--text-m);font-size:15px;font-style:italic;padding:40px 0}
+.well-progress.reflecting .progress-dot{animation:litpill 1.8s ease-in-out infinite}
+.well-progress.reflecting .progress-dot:nth-child(2){animation-delay:0.3s}
+.well-progress.reflecting .progress-dot:nth-child(3){animation-delay:0.6s}
 @keyframes litpill{0%,100%{background:#2E2E44;box-shadow:none}30%,50%{background:#D4A853;box-shadow:0 0 12px rgba(212,168,83,0.4)}}
 
 .reflection-text{font-size:16px;color:var(--text-s);line-height:1.9;margin-bottom:20px}
@@ -78,7 +82,7 @@ nav.scrolled .nav-wordmark{opacity:1}
 .contact-input::placeholder{color:var(--text-m);font-style:italic}
 
 .note{font-size:12px;color:var(--text-m);font-family:'DM Mono',monospace;text-align:center;letter-spacing:0.03em}
-.spectrum-line{height:1px;background:var(--grad);max-width:640px;margin:0 auto}
+.spectrum-line{height:1px;background:linear-gradient(90deg, transparent, var(--tungsten-dim), var(--tungsten), var(--tungsten-dim), transparent);max-width:640px;margin:0 auto}
 .divider{height:1px;margin:48px 0;background:var(--grad)}
 
 .bridge{padding:80px 40px;max-width:640px;margin:0 auto;text-align:center;position:relative;z-index:1}
@@ -118,17 +122,15 @@ footer{border-top:1px solid;border-image:var(--grad) 1;padding:48px 40px;text-al
 </nav>
 
 <div class="hero">
-  <div class="hero-mark">
-    <svg width="120" height="120" viewBox="0 0 200 200" fill="none"><path d="M10 10L10 190L190 190L190 10L10 10" stroke="#D4A853" stroke-width="5" fill="none" stroke-linecap="square"/><path d="M38 50L38 162L162 162L162 50" stroke="#D4A853" stroke-width="4.5" fill="none" stroke-linecap="square"/><path d="M66 66L66 134L134 134L134 66L114 66" stroke="#D4A853" stroke-width="4" fill="none" stroke-linecap="square"/><path d="M86 66L66 66" stroke="#D4A853" stroke-width="4" stroke-linecap="square"/><rect x="88" y="88" width="24" height="24" fill="#D4A853"/></svg>
-  </div>
-  <div class="hero-wordmark">
-    <svg width="280" height="56" viewBox="0 0 720 160" fill="none"><path d="M20 12L20 148L136 148" stroke="#D4A853" stroke-width="11" stroke-linecap="square"/><path d="M172 12L172 148L296 148L296 12" stroke="#D4A853" stroke-width="11" stroke-linecap="square"/><path d="M332 148L332 12L400 12L400 40" stroke="#D4A853" stroke-width="11" stroke-linecap="square"/><path d="M424 40L424 12L492 12L492 148" stroke="#D4A853" stroke-width="11" stroke-linecap="square"/><path d="M528 148L528 12L652 12L652 148" stroke="#D4A853" stroke-width="11" stroke-linecap="square"/><path d="M528 80L652 80" stroke="#D4A853" stroke-width="11" stroke-linecap="square"/></svg>
-  </div>
-  <div class="spectrum-line-hero"></div>
-  <p class="hero-claim">Most of what makes your work yours is invisible. Not because it&rsquo;s hidden &mdash; because no one&rsquo;s ever asked the right questions.</p>
-  <div class="scroll-cue" onclick="document.getElementById('well').scrollIntoView({behavior:'smooth'})">
-    <span></span>
-    <p>Begin</p>
+  <div class="hero-cta" onclick="beginReflection()">
+    <div class="hero-mark">
+      <svg width="120" height="120" viewBox="0 0 200 200" fill="none"><path d="M10 10L10 190L190 190L190 10L10 10" stroke="#D4A853" stroke-width="5" fill="none" stroke-linecap="square"/><path d="M38 50L38 162L162 162L162 50" stroke="#D4A853" stroke-width="4.5" fill="none" stroke-linecap="square"/><path d="M66 66L66 134L134 134L134 66L114 66" stroke="#D4A853" stroke-width="4" fill="none" stroke-linecap="square"/><path d="M86 66L66 66" stroke="#D4A853" stroke-width="4" stroke-linecap="square"/><rect x="88" y="88" width="24" height="24" fill="#D4A853"/></svg>
+    </div>
+    <div class="hero-wordmark">
+      <svg width="280" height="56" viewBox="0 0 720 160" fill="none"><path d="M20 12L20 148L136 148" stroke="#D4A853" stroke-width="11" stroke-linecap="square"/><path d="M172 12L172 148L296 148L296 12" stroke="#D4A853" stroke-width="11" stroke-linecap="square"/><path d="M332 148L332 12L400 12L400 40" stroke="#D4A853" stroke-width="11" stroke-linecap="square"/><path d="M424 40L424 12L492 12L492 148" stroke="#D4A853" stroke-width="11" stroke-linecap="square"/><path d="M528 148L528 12L652 12L652 148" stroke="#D4A853" stroke-width="11" stroke-linecap="square"/><path d="M528 80L652 80" stroke="#D4A853" stroke-width="11" stroke-linecap="square"/></svg>
+    </div>
+    <div class="spectrum-line-hero"></div>
+    <p class="hero-claim">When&rsquo;s the last time someone asked you a question about your work that you didn&rsquo;t immediately know the answer to?<span class="hero-tap">Tap to begin</span></p>
   </div>
 </div>
 
@@ -163,7 +165,7 @@ footer{border-top:1px solid;border-image:var(--grad) 1;padding:48px 40px;text-al
   <!-- Loading -->
   <div class="phase" id="loading-phase">
     <div class="loading-text">
-      Reflecting <span class="loading-dot"></span><span class="loading-dot"></span><span class="loading-dot"></span>
+      Reflecting
     </div>
   </div>
 
@@ -207,14 +209,14 @@ footer{border-top:1px solid;border-image:var(--grad) 1;padding:48px 40px;text-al
   </div>
 </div>
 
-<div class="spectrum-line"></div>
+<div class="spectrum-line" id="post-reflection" style="display:none"></div>
 
-<div class="bridge">
+<div class="bridge" id="bridge" style="display:none">
   <p>That was the surface. Three questions, a quick draw. The full version is a sixty-minute conversation and seven trained perspectives, all listening to the same material. What one voice surfaces is a pattern. What several voices surface together is the whole picture.</p>
   <a href="/prism" class="bridge-link">How it works &rarr;</a>
 </div>
 
-<footer>
+<footer id="footer" style="display:none">>
   <div class="footer-mark">
     <svg width="28" height="28" viewBox="0 0 200 200" fill="none"><path d="M10 10L10 190L190 190L190 10L10 10" stroke="#D4A853" stroke-width="12" fill="none" stroke-linecap="square"/><path d="M40 52L40 160L160 160L160 52" stroke="#D4A853" stroke-width="11" fill="none" stroke-linecap="square"/><path d="M68 68L68 132L132 132L132 68L112 68" stroke="#D4A853" stroke-width="10" fill="none" stroke-linecap="square"/><path d="M88 68L68 68" stroke="#D4A853" stroke-width="10" stroke-linecap="square"/><rect x="84" y="84" width="32" height="32" fill="#D4A853"/></svg>
   </div>
@@ -230,6 +232,14 @@ footer{border-top:1px solid;border-image:var(--grad) 1;padding:48px 40px;text-al
 // ---- CONFIG ----
 // In production, this points to your Cloudflare Worker
 const API_BASE = "https://luma-reflection.lumampls.workers.dev";
+
+// ---- DISSOLVE ----
+function beginReflection() {
+  document.querySelector(".hero").classList.add("dissolved");
+  document.getElementById("well").classList.add("visible");
+  window.scrollTo(0, 0);
+  setTimeout(() => document.getElementById("a-0").focus(), 900);
+}
 
 // ---- STATE ----
 let well = [];
@@ -286,7 +296,8 @@ async function getReflection() {
   document.getElementById("step-" + currentStep).classList.remove("active");
   document.getElementById("dot-" + currentStep).classList.remove("current");
   document.getElementById("dot-" + currentStep).classList.add("filled");
-  document.getElementById("progress").style.opacity = "0.3";
+  [0,1,2].forEach(i => { document.getElementById("dot-" + i).classList.remove("filled","current"); });
+  document.getElementById("progress").classList.add("reflecting");
   document.getElementById("loading-phase").classList.add("active");
   document.getElementById("well").scrollIntoView({ behavior: "smooth", block: "start" });
 
@@ -313,7 +324,13 @@ async function getReflection() {
   });
 
   document.getElementById("loading-phase").classList.remove("active");
+  document.getElementById("progress").classList.remove("reflecting");
+  document.getElementById("progress").style.opacity = "0.3";
   document.getElementById("reflection-phase").classList.add("active");
+  document.getElementById("nav").classList.add("visible");
+  document.getElementById("post-reflection").style.display = "";
+  document.getElementById("bridge").style.display = "";
+  document.getElementById("footer").style.display = "";
   document.getElementById("reflection-phase").scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
@@ -395,7 +412,10 @@ function downloadMd() {
 
 // ---- NAV ----
 window.addEventListener("scroll", () => {
-  document.getElementById("nav").classList.toggle("scrolled", window.scrollY > 80);
+  const nav = document.getElementById("nav");
+  if (nav.classList.contains("visible")) {
+    nav.classList.toggle("scrolled", window.scrollY > 80);
+  }
 });
 
 // ---- ENTER KEY ----
