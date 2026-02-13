@@ -49,7 +49,7 @@ nav.scrolled .nav-wordmark{opacity:1}
 .question-step.active{display:block;animation:fadeUp 0.5s ease forwards}
 .question-number{font-size:11px;font-family:'DM Mono',monospace;color:var(--void-border);letter-spacing:0.06em;margin-bottom:20px}
 .question-text{font-size:18px;font-weight:400;line-height:1.65;color:var(--tungsten);margin-bottom:32px}
-.question-input{width:100%;min-height:140px;padding:24px;background:transparent;border:1px solid var(--void-border);color:var(--text-p);font-family:'Rubik',sans-serif;font-size:15px;line-height:1.7;resize:vertical;outline:none;transition:border-color 0.3s}
+.question-input{width:100%;min-height:140px;padding:24px;background:transparent;border:1px solid var(--void-border);color:var(--text-p);font-family:'Rubik',sans-serif;font-size:16px;line-height:1.7;resize:vertical;outline:none;transition:border-color 0.3s}
 .question-input::placeholder{color:var(--text-m);font-style:italic}
 .question-input:focus{border-color:var(--tungsten-dim)}
 .question-nav{display:flex;justify-content:flex-end;margin-top:20px}
@@ -71,7 +71,7 @@ nav.scrolled .nav-wordmark{opacity:1}
 .contact-methods{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin-bottom:32px}
 .method-btn{padding:8px 16px;background:transparent;border:1px solid var(--void-border);color:var(--text-m);font-family:'Rubik',sans-serif;font-size:13px;cursor:pointer;transition:all 0.2s}
 .method-btn:hover{border-color:var(--tungsten-dim);color:var(--text-s)}
-.contact-input{width:100%;padding:16px 20px;background:transparent;border:1px solid var(--void-border);color:var(--text-p);font-family:'Rubik',sans-serif;font-size:15px;outline:none;transition:border-color 0.3s}
+.contact-input{width:100%;padding:16px 20px;background:transparent;border:1px solid var(--void-border);color:var(--text-p);font-family:'Rubik',sans-serif;font-size:16px;outline:none;transition:border-color 0.3s}
 .contact-input:focus{border-color:var(--tungsten-dim)}
 .contact-input::placeholder{color:var(--text-m);font-style:italic}
 
@@ -97,8 +97,40 @@ footer{border-top:1px solid;border-image:var(--grad) 1;padding:48px 40px;text-al
 @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 @keyframes pulse{0%,100%{opacity:0.3}50%{opacity:0.8}}
 
-@media(max-width:768px){.hero{padding:80px 24px}.well{padding:80px 24px 40px}.question-text{font-size:17px}.bridge{padding:60px 24px}}
-@media(max-width:480px){.question-text{font-size:16px}}
+@media(max-width:768px){
+  .hero{padding:60px 24px}
+  .hero-mark svg{width:80px;height:80px}
+  .hero-wordmark svg{width:200px;height:40px}
+  .hero-claim{font-size:18px;max-width:100%}
+  .well{padding:60px 24px 40px}
+  .well-mark svg{width:80px;height:80px}
+  .well-intro{font-size:15px;margin-bottom:48px}
+  .question-text{font-size:17px}
+  .question-input{min-height:120px;padding:16px;font-size:14px}
+  .bridge{padding:60px 24px}
+  .bridge p{font-size:15px}
+  .contact-question{font-size:16px}
+  .method-btn{padding:10px 20px;font-size:14px}
+  .footer-links{gap:24px}
+  footer{padding:40px 24px}
+}
+@media(max-width:480px){
+  .hero{padding:48px 20px}
+  .hero-mark svg{width:64px;height:64px}
+  .hero-wordmark svg{width:160px;height:32px}
+  .hero-claim{font-size:16px}
+  .hero-tap{font-size:12px}
+  .well{padding:48px 20px 32px}
+  .well-mark svg{width:64px;height:64px}
+  .well-intro{font-size:14px;margin-bottom:40px}
+  .question-text{font-size:16px}
+  .question-input{min-height:100px;padding:14px}
+  .reflection-text{font-size:15px}
+  .contact-methods{gap:10px}
+  .method-btn{padding:10px 14px}
+  .footer-links{flex-direction:column;gap:16px}
+  .bridge{padding:48px 20px}
+}
 </style>
 </head>
 <body>
