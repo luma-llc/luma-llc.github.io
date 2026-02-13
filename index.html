@@ -296,7 +296,7 @@ async function getReflection() {
   document.getElementById("post-reflection").style.display = "";
   document.getElementById("bridge").style.display = "";
   document.getElementById("footer").style.display = "";
-  document.getElementById("reflection-phase").scrollIntoView({ behavior: "smooth", block: "start" });
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 // ---- CONTACT ----
