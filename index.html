@@ -61,7 +61,10 @@ nav.scrolled .nav-wordmark{opacity:1}
 .phase.active{display:block;animation:fadeUp 0.6s ease forwards}
 
 .loading-text{text-align:center;color:var(--text-m);font-size:15px;font-style:italic;padding:40px 0}
-.loading-dot{display:inline-block;animation:pulse 1.5s ease infinite}
+.loading-dot{display:inline-block;width:6px;height:6px;border-radius:3px;background:var(--void-border);margin:0 6px;animation:litpill 1.8s ease-in-out infinite}
+.loading-dot:nth-child(2){animation-delay:0.3s}
+.loading-dot:nth-child(3){animation-delay:0.6s}
+@keyframes litpill{0%,100%{background:var(--void-border);box-shadow:none}30%,50%{background:var(--tungsten);box-shadow:0 0 8px var(--tungsten-glow)}}
 
 .reflection-text{font-size:16px;color:var(--text-s);line-height:1.9;margin-bottom:20px}
 .reflection-content{cursor:text;margin-bottom:40px}
@@ -160,7 +163,7 @@ footer{border-top:1px solid;border-image:var(--grad) 1;padding:48px 40px;text-al
   <!-- Loading -->
   <div class="phase" id="loading-phase">
     <div class="loading-text">
-      Reflecting<span class="loading-dot"> .</span><span class="loading-dot" style="animation-delay:0.3s"> .</span><span class="loading-dot" style="animation-delay:0.6s"> .</span>
+      Reflecting <span class="loading-dot"></span><span class="loading-dot"></span><span class="loading-dot"></span>
     </div>
   </div>
 
@@ -226,7 +229,7 @@ footer{border-top:1px solid;border-image:var(--grad) 1;padding:48px 40px;text-al
 <script>
 // ---- CONFIG ----
 // In production, this points to your Cloudflare Worker
-const API_BASE = "https://luma-reflection.lumampls.workers.dev";
+const API_BASE = "https://luma-reflection.YOUR-SUBDOMAIN.workers.dev";
 
 // ---- STATE ----
 let well = [];
